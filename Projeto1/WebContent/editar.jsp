@@ -41,7 +41,7 @@
 	    <input type="hidden" name="id" value="<%=id%>" readonly>
 	  	Nome do Jogo: <input type='text' name='jogo' value="<%=jogo%>" required='required'><br/>
 	  	Gênero do Jogo: <input type='text' name='genero' value="<%=genero%>" required='required'><br/>
-	 	Preço do Jogo: <input type='text' name='preco' value="<%=preco%>" required='required'><br/>
+	 	Preço do Jogo: <input type='number' min="0" max="99999.99" step="0.01" name='preco' value='<%=preco%>' required='required'><br/>
 	  	Data da Compra: <input type='date' name='compra' value="<%=data%>" required='required'><br/>
 	  
 	  <input type='submit' value='Editar'>
