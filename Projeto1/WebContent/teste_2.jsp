@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ page import="java.util.*, meuPacote.*"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,8 +11,16 @@
 </head>
 <body>
 	 <jsp:useBean id="dao" class="meuPacote.DAO"/>
+	 <%!String user;
+	 String color;
+	 String ordem;
+	 boolean order;
+	 List<Jogos> item;%>
+	
+	 <% ordem = (String) request.getAttribute("ordem");
+	 String user = (String) request.getAttribute("user");%>
 	 
-	 <% String user = (String) request.getAttribute("user"); %>
+	 
 	 <form action='login.jsp'>
 	 	Bem vindo, <%=user%>.
 		<input type='submit' value='Sair'>
@@ -23,29 +32,39 @@
 	  	<input type="hidden" name="user" value="<%=user%>" readonly>
 	  	Nome do Jogo: <input type='text' name='jogo' required='required'><br/>
 	  	Gênero do Jogo: <input type='text' name='genero' required='required'><br/>
-	 	Preço do Jogo: <input type='text' name='preco' required='required'><br/>
+	 	Preço do Jogo: <input type='number' min="0" max="99999.99" step="0.01" name='preco' required='required'><br/>
 	  	Data da Compra: <input type='date' name='compra' required='required'><br/>
 	  
 	  <input type='submit' value='Adicionar'>
 	  </form>
 	<br/>
-	<table border="1">
+	<form action="ordem" method="post" autocomplete="off">
+		<input type="hidden" name="user" value="<%=user%>" readonly>
+		Ordenar: 
+		<input type="submit" value="User" name="variable" class="actionButton"> 
+		<input type="submit" value="Jogo" name="variable" class="actionButton"> 
+		<input type="submit" value="Genero" name="variable" class="actionButton">
+		<input type="submit" value="Preco" name="variable" class="actionButton">
+		<input type="submit" value="Data" name="variable" class="actionButton">
+		<input type="submit" value="Remover Filtro" name="variable" class="actionButton">
+	 </form>
+	 <br/>
+	 <table border="1">
 	 <tr>
-	 <td><b>Id</b></td>
 	 <td><b>User</b></td>
 	 <td><b>Jogo</b></td>
 	 <td><b>Gênero</b></td>
 	 <td><b>Preço</b></td>
 	 <td><b>Data da Compra</b></td>
 	 </tr>
-	 <c:forEach var="pessoa" items="<%=dao.getJogos()%>" varStatus="id">
+	 <c:forEach var="pessoa" items="<%=dao.getOrdem(ordem)%>" varStatus="id">
 	 	<tr bgcolor="#${id.count%2 == 0 ? 'bbffcc' : 'ffffbb' }" >
-	 	<td>${pessoa.id}</td>
 	 	<td>${pessoa.user}</td>
 	 	<td>${pessoa.jogo}</td>
 	 	<td>${pessoa.genero}</td>
 	 	<td>${pessoa.preco}</td>
 	 	<td><fmt:formatDate value="${pessoa.data.time}" pattern="dd/MM/yyyy"/></td>
+	 	
 	 	<td><form action='edita' method= 'get'>
 	 			<input type="hidden" name="id" value= "${pessoa.id}" readonly>
 	 			<input type="hidden" name="user" value="<%=user%>" readonly>
@@ -56,11 +75,13 @@
 	 			<input type="hidden" name="compra" value=<fmt:formatDate value="${pessoa.data.time}" pattern="yyyy-MM-dd"/> readonly>
 				<input type='submit' value='Editar'>
 		</form></td>
+		
 	 	<td><form method='post' action='remove'>
 	 			<input type="hidden" name="id" value= "${pessoa.id}" readonly>
 	 			<input type="hidden" name="user" value="<%=user%>" readonly>
 				<input type='submit' value='Excluir'>
 		</form></td>
+		
 	 	</tr>
 	 </c:forEach>
 	</table>

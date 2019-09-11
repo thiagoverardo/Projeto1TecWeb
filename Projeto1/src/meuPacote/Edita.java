@@ -44,6 +44,8 @@ public class Edita extends HttpServlet {
 			String date = request.getParameter("compra");
 			request.setAttribute("data", date);
 			
+			request.setAttribute("ordem", "");
+			
 			String id = request.getParameter("id");
 			request.setAttribute("id", id);
 			
@@ -87,6 +89,8 @@ public class Edita extends HttpServlet {
 			
 			String user = request.getParameter("user");
 			request.setAttribute("user", user);
+			
+			request.setAttribute("ordem", "");
 			
 			RequestDispatcher rd = request.getRequestDispatcher("teste_2.jsp");
 			rd.forward(request, response);

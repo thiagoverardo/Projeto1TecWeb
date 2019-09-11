@@ -15,6 +15,7 @@ public class Login extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		DAO dao;		
 		try {
 			dao = new DAO();
@@ -25,6 +26,7 @@ public class Login extends HttpServlet {
 			if (dao.verifica(cadastro)) {
 				String user = request.getParameter("user");
 				request.setAttribute("user", user);
+				request.setAttribute("ordem", "");
 				RequestDispatcher rd = request.getRequestDispatcher("teste_2.jsp");
 				rd.forward(request, response);
 			} else {

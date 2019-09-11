@@ -15,6 +15,7 @@ public class Signin extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		DAO dao;
 
 		try {
@@ -30,6 +31,7 @@ public class Signin extends HttpServlet {
 					dao.adiciona(cadastro);
 					String user = request.getParameter("user");
 					request.setAttribute("user", user);
+					request.setAttribute("ordem", "");
 					RequestDispatcher rd = request.getRequestDispatcher("teste_2.jsp");
 					rd.forward(request, response);
 					

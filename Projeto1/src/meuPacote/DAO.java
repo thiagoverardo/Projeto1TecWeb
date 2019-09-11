@@ -67,29 +67,29 @@ public class DAO {
 	
 	public List<Jogos> getJogos() throws SQLException {
 		
-		List<Jogos> pessoas = new ArrayList<Jogos>();
+		List<Jogos> jogos = new ArrayList<Jogos>();
 
-		PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Jogos");
+		PreparedStatement stmt = connection.prepareStatement("SELECT * FROM jogos");
 		ResultSet rs = stmt.executeQuery();
 
 		while (rs.next()) {
 
-			Jogos pessoa = new Jogos();
+			Jogos jogo = new Jogos();
 
-			pessoa.setId(rs.getInt("id"));
-			pessoa.setUser(rs.getString("user"));
-			pessoa.setJogo(rs.getString("jogo"));
-			pessoa.setGenero(rs.getString("genero"));
-			pessoa.setPreco(rs.getFloat("preco"));
+			jogo.setId(rs.getInt("id"));
+			jogo.setUser(rs.getString("user"));
+			jogo.setJogo(rs.getString("jogo"));
+			jogo.setGenero(rs.getString("genero"));
+			jogo.setPreco(rs.getFloat("preco"));
 			Calendar data = Calendar.getInstance();
 			data.setTime(rs.getDate("compra"));
-			pessoa.setData(data);
-			pessoas.add(pessoa);
+			jogo.setData(data);
+			jogos.add(jogo);
 		}
 
 		rs.close();
 		stmt.close();
-		return pessoas;
+		return jogos;
 	}
 
 	public void adicionaJogo(Jogos pessoa) throws SQLException {
@@ -116,16 +116,52 @@ public class DAO {
 			reset.close();
 		}
 	}
-	public void atualizaJogo(Jogos pessoa) throws SQLException {
+	public void atualizaJogo(Jogos jogo) throws SQLException {
 		String sql = "UPDATE jogos SET user=?, jogo=?, genero=?, preco=?, compra=? WHERE id=?";
 		PreparedStatement stmt = connection.prepareStatement(sql);
-		stmt.setString(1, pessoa.getUser());
-		stmt.setString(2, pessoa.getJogo());
-		stmt.setString(3, pessoa.getGenero());
-		stmt.setFloat(4, pessoa.getPreco());
-		stmt.setDate(5, new java.sql.Date(pessoa.getData().getTimeInMillis()));
-		stmt.setInt(6,  pessoa.getId());
+		stmt.setString(1, jogo.getUser());
+		stmt.setString(2, jogo.getJogo());
+		stmt.setString(3, jogo.getGenero());
+		stmt.setFloat(4, jogo.getPreco());
+		stmt.setDate(5, new java.sql.Date(jogo.getData().getTimeInMillis()));
+		stmt.setInt(6,  jogo.getId());
 		stmt.execute();
 		stmt.close();
 	 }
+	public List<Jogos> getOrdem(String obj) throws SQLException {
+		List<Jogos> jogos = new ArrayList<Jogos>();
+		PreparedStatement stmt;
+		if (obj.contentEquals("user")) {
+			stmt = connection.prepareStatement("SELECT * FROM jogos ORDER BY user");
+		} else if (obj.contentEquals("jogo")) {
+			stmt = connection.prepareStatement("SELECT * FROM jogos ORDER BY jogo");
+		} else if (obj.contentEquals("genero")) {
+			stmt = connection.prepareStatement("SELECT * FROM jogos ORDER BY genero");
+		} else if (obj.contentEquals("preco")) {
+			stmt = connection.prepareStatement("SELECT * FROM jogos ORDER BY preco");
+		} else if (obj.contentEquals("date")) {
+			stmt = connection.prepareStatement("SELECT * FROM jogos ORDER BY compra");
+		} else {
+			stmt = connection.prepareStatement("SELECT * FROM jogos");
+		}
+		ResultSet rs = stmt.executeQuery();
+		while (rs.next()) {
+
+			Jogos jogo = new Jogos();
+
+			jogo.setId(rs.getInt("id"));
+			jogo.setUser(rs.getString("user"));
+			jogo.setJogo(rs.getString("jogo"));
+			jogo.setGenero(rs.getString("genero"));
+			jogo.setPreco(rs.getFloat("preco"));
+			Calendar data = Calendar.getInstance();
+			data.setTime(rs.getDate("compra"));
+			jogo.setData(data);
+			jogos.add(jogo);
+		}
+		rs.close();
+		stmt.close();
+		return jogos;
+	}
+
 }

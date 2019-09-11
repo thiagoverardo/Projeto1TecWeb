@@ -31,6 +31,7 @@ public class Remove extends HttpServlet {
 				dao.removeJogo(Integer.valueOf(request.getParameter("id")));
 				String user = request.getParameter("user");
 				request.setAttribute("user", user);
+				request.setAttribute("ordem", "");
 				RequestDispatcher rd = request.getRequestDispatcher("teste_2.jsp");
 				rd.forward(request, response);
 	
