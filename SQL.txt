@@ -22,7 +22,7 @@ Tabela Cadastro:
 
 Tabela Jogos:
 	
-	CREATE TABLE Cadastro(
+	CREATE TABLE Jogos(
  	id INT NOT NULL AUTO_INCREMENT,
  	user VARCHAR(32) NOT NULL,
  	jogo VARCHAR(32) NOT NULL,
